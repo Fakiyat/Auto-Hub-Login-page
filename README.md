@@ -7,10 +7,13 @@
 <h2>This is the Login page</h2>
 <hr/>
 
-![Screenshot 2025-02-14 225603](https://github.com/user-attachments/assets/6434c5d6-8adc-46d0-8260-8e3bde829e59)
+![Screenshot 2025-02-20 020501](https://github.com/user-attachments/assets/7829a9fe-f9ae-4fb2-aac6-e230bf4e64e0)
 
 <hr/>
 
 <h2>This is the Home page</h2>
 <p> This is just a basic home page You can change it </p>
+<hr/>
 
+
+![Screenshot 2025-02-20 020525](https://github.com/user-attachments/assets/82f81c84-1e19-48ba-923c-9714ebfda143)
