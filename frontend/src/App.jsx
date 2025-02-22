@@ -1,10 +1,10 @@
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-import React from "react";
-import ProtectedRoute from "./Components/ProtectedRoute.jsx";
-import Login from "./Pages/Login.jsx";
-import HomePage from "./Pages/HomePage.jsx";
-import NotFound from "./Pages/NotFound.jsx";
 // import Register from "./Pages/Register.jsx";
+
+import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
+import Login from "./feature/auth/Login";
+import HomePage from "./feature/inventory/HomePage";
+import ProtectedRoute from "./feature/navigation/ProtectedRoute";
+import NotFound from "./shared/components/NotFound";
 
 function Logout() {
   localStorage.clear();

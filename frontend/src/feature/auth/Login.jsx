@@ -1,8 +1,8 @@
 // Main container for the login Page
 import React from "react";
-import Form from "../Components/Form";
-import LoginImage from "../Components/LoginImage";
-import Footer from "../Components/Footer";
+import Footer from "./Footer";
+import Form from "./Form";
+import LoginImage from "./LoginImage";
 
 const Login = () => {
   return (

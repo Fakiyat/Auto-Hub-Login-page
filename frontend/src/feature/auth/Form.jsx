@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { ACCESS_TOKEN, REFRESH_TOKEN } from "../../shared/constants/constants";
+import "../../shared/Styles/Form.css";
 import PasswordField from "./PasswordField";
-import { ACCESS_TOKEN, REFRESH_TOKEN } from "../constants";
-import "../Styles/Form.css";
 
 function Form({ route, method }) {
   const [username, setUsername] = useState("");
