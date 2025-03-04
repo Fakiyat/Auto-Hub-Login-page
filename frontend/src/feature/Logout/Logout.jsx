@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "./style/Logout.css";
+import SettingsMenu from "@/shared/components/SettingsMenu";
 
 const Logout = () => {
   const navigate = useNavigate();
@@ -21,11 +22,9 @@ const Logout = () => {
   };
 
   return (
-    <div className="user-info">
-      <span>Welcome, {user?.name}</span>
-      <button onClick={handleLogout} className="logout-btn">
-        Logout
-      </button>
+    <div>
+      <SettingsMenu handleLogout={handleLogout} />
+      {/* <span>Welcome, {user?.name}</span> */}
     </div>
   );
 };

@@ -43,7 +43,7 @@ function Form({ route, method }) {
         localStorage.setItem(REFRESH_TOKEN, data.refresh);
         navigate("/");
       } else {
-        navigate("/login");
+        // navigate("/login");
       }
     } catch (error) {
       console.error("Login Error:", error);

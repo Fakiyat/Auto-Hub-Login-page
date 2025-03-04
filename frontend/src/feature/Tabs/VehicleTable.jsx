@@ -1,5 +1,11 @@
 import React, { useState } from "react";
 import "./Style/VehicleTable.css";
+import DropDown from "@/shared/components/dropDown";
+import DeleteIcon from "@mui/icons-material/Delete";
+import IconButton from "@mui/material/IconButton";
+import ModeEditIcon from "@mui/icons-material/ModeEdit";
+import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
+import { color } from "@mui/system";
 
 //Vehicle table filterings
 const VehicleTable = ({ activeTab, vehicles, setVehicles }) => {
@@ -7,6 +13,7 @@ const VehicleTable = ({ activeTab, vehicles, setVehicles }) => {
   const [selectedRows, setSelectedRows] = useState([]); // it helps to track the selected rows, it stores the ids of the vehicles that are selected
   const [selectAll, setSelectAll] = useState(false); //it helps to track "Select All" checkboxes
   const [showAddForm, setShowAddForm] = useState(false); // this is for the form when we click to add vehicle, its is set to be false so it will now be showing form all the time
+  const [editingVehicle, setEditingVehicle] = useState(null); //To track Editing
 
   const [newVehicle, setNewVehicle] = useState({
     name: "",
@@ -16,7 +23,7 @@ const VehicleTable = ({ activeTab, vehicles, setVehicles }) => {
     img: "",
     imgFile: null, // new field for uploaded file
   }); // this is a Add vehicle form where we add the fields
-  //--------------------------------------------//----------------------------------------------------------------------------//------------------------------
+  //--------------------------------------------//----------------------------------------------------------------------------//------------------------------git
   //Handle the Select All checkbox
   function handleSelectAll() {
     if (selectAll) {
@@ -31,18 +38,25 @@ const VehicleTable = ({ activeTab, vehicles, setVehicles }) => {
   }
   //------------------------------------------------------///---------------------------------------------//
   // Handle Individual checkbox clickss
-  function handleRowSelect(id) {
+  const handleRowSelect = (id) => {
     setSelectedRows((prevSelectedRows) => {
+      let updatedRows;
       //.includes(id) checks if the vehicle’s id is already in the selectedRows array.
       if (prevSelectedRows.includes(id)) {
         //unselect (remove from array)
-        return prevSelectedRows.filter((rowid) => rowid !== id);
+        updatedRows = prevSelectedRows.filter((rowid) => rowid !== id);
       } else {
         // select (add to array)
-        return [...prevSelectedRows, id]; //[...prevSelectedRows, id] creates a new array with all previously selected rows + the new id.
+        updatedRows = [...prevSelectedRows, id]; //[...prevSelectedRows, id] creates a new array with all previously selected rows + the new id.
       }
+      if (updatedRows.length === filteredVehicles.length) {
+        setSelectAll(true);
+      } else {
+        setSelectAll(false);
+      }
+      return updatedRows;
     });
-  }
+  };
   //------------------------------------------------------------------//---------------------------------------------------//-------------------------------
   // handle Form input change
   function handleFormChange(event) {
@@ -50,16 +64,29 @@ const VehicleTable = ({ activeTab, vehicles, setVehicles }) => {
     setNewVehicle({ ...newVehicle, [name]: value }); // setNewVehicle() updates the newVehicle state.//Updates the corresponding field (name, model, price, etc.) in newVehicle.
   }
   //--------------------------------------//-------------------------------------------------------------------------------------//-------------------------------------------------------------------------------------
-  //Adding neew Vehicle to the List
-  function handleSaveVehicle() {
-    const newVehicleWithId = {
-      ...newVehicle,
-      id: Date.now(), // This ensures every vehicle always has a unique id.
-    };
-    setVehicles([...vehicles, newVehicleWithId]); // update vehicle list in parent
-    setShowAddForm(false); /// Hides form after adding
+  //Adding neew Vehicle to the List// And Editing popup
+  const handleSaveVehicle = () => {
+    if (editingVehicle) {
+      // Update existing vehicle (edit case)
+      setVehicles(
+        vehicles.map((vehicel) =>
+          vehicel.id === editingVehicle.id
+            ? { ...newVehicle, id: editingVehicle.id }
+            : vehicel
+        )
+      );
+      setEditingVehicle(null); // Exit edit mode
+    } else {
+      //Add new vehicle(Add Case)
+      const newVehicleWithId = { ...newVehicle, id: Date.now() };
+      setVehicles([...vehicles, newVehicleWithId]);
+    }
+    setShowAddForm(false);
+    ResetForm();
+  };
+  //--------------------------------------Handle Editing Row-------------------------------------------------------------------------------------//-------------------------------------------------------------------------------------
+  const ResetForm = () => {
     setNewVehicle({
-      // reset form fields
       name: "",
       model: "",
       price: "",
@@ -67,7 +94,25 @@ const VehicleTable = ({ activeTab, vehicles, setVehicles }) => {
       img: "",
       imgFile: null,
     });
-  }
+  };
+
+  const handleEditVehicle = (vehicel) => {
+    setEditingVehicle(vehicel);
+    setNewVehicle({ ...vehicel }); // pre-filles form with existing data
+    setShowAddForm(true); // Shows the form for editing
+  };
+
+  /// handling delete button
+
+  const handleDeleteVehicle = (id) => {
+    const confirmDelete = window.confirm(
+      "Are you sure you want to delete this vehicel"
+    );
+    if (confirmDelete) {
+      setVehicles(vehicles.filter((vehicle) => vehicle.id !== id));
+    }
+  };
+
   //--------------------------------------Handleing Image-------------------------------------------------------------------------------------//-------------------------------------------------------------------------------------
   function handleImageChange(e) {
     if (e.target.files && e.target.files.length > 0) {
@@ -92,8 +137,6 @@ const VehicleTable = ({ activeTab, vehicles, setVehicles }) => {
 
   //   console.log(filteredVehicles); it return the data of vehicles in an array
   //--------------------------------------------------//-----------------------------------------
-  const dropDownOptions = ["Yes", "No", "Profile Only"];
-  //-------------------------------------//---------------------------------------------------------------------------------
   return (
     <div className=" vehicle-table">
       {/* Search Bar */}
@@ -110,7 +153,7 @@ const VehicleTable = ({ activeTab, vehicles, setVehicles }) => {
           className="add-vehicle-btn"
           onClick={() => setShowAddForm(!showAddForm)}
         >
-          {showAddForm ? "Cancel" : "ADD Vehicel"}
+          Add Form
         </button>
       </div>
       {/*---------------------------------------- Button toggle change ends here------------------------------------------------- */}
@@ -118,9 +161,13 @@ const VehicleTable = ({ activeTab, vehicles, setVehicles }) => {
       {showAddForm && (
         <div className="add-vehicle-modal-overlay">
           <div className="add-vehicle-form">
-            <button className="close-btn" onClick={() => setShowAddForm(false)}>
-              x
-            </button>
+            <CloseRoundedIcon
+              className="close-btn"
+              aria-label="close"
+              onClick={() => setShowAddForm(false)}
+            ></CloseRoundedIcon>
+            <h2 style={{ color: "#007bff" }}>Add New Vehicel</h2>
+            <hr />
             <input
               type="text"
               placeholder="Vehicle Name"
@@ -166,7 +213,7 @@ const VehicleTable = ({ activeTab, vehicles, setVehicles }) => {
             )}
             {/*------------------When clicked, this button calls handleSaveVehicle, which adds the new vehicle to the table.------------------- */}
             <button className="btn-save" onClick={handleSaveVehicle}>
-              Save Vehicle
+              {editingVehicle ? "Update Vehicel" : "Save Vehicel"}
             </button>
           </div>
         </div>
@@ -233,13 +280,13 @@ const VehicleTable = ({ activeTab, vehicles, setVehicles }) => {
               </td>
               {/* AutoTraders Dropdown */}
               <td>
-                <select>
-                  {dropDownOptions.map((option) => (
-                    <option key={option} value={option}>
+                <DropDown>
+                  {/* {dropDownOptions.map((option) => (
+                    <option key={option} value={option} defaultValue={option}>
                       {option}
                     </option>
-                  ))}
-                </select>
+                  ))} */}
+                </DropDown>
               </td>
               <td>
                 {/* EMG Toggle */}
@@ -264,9 +311,22 @@ const VehicleTable = ({ activeTab, vehicles, setVehicles }) => {
               </td>
 
               <td className=" actions">
-                <button className="btn btn-view">View</button>
-                <button className="btn btn-edit">Edit</button>
-                <button className="btn btn-delete">Delete</button>
+                {/* <button className="btn btn-view">View</button> */}
+                <IconButton
+                  onClick={() => handleEditVehicle(vehicle)}
+                  aria-label="edit"
+                  style={{ color: "#007bff" }}
+                >
+                  <ModeEditIcon />
+                </IconButton>
+
+                <IconButton
+                  onClick={() => handleDeleteVehicle(vehicle.id)}
+                  aria-label="delete"
+                  style={{ color: "#ee4b00" }}
+                >
+                  <DeleteIcon />
+                </IconButton>
               </td>
             </tr>
           ))}
