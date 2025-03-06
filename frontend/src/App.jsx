@@ -2,9 +2,11 @@
 
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import Login from "./feature/auth/Login";
-import HomePage from "./feature/inventory/HomePage";
-import ProtectedRoute from "./feature/navigation/ProtectedRoute";
+import InventoryPage from "./feature/inventory/InventoryPage";
+// import ProtectedRoute from "./feature/navigation/ProtectedRoute";
 import NotFound from "./shared/components/NotFound";
+import ProfilePage from "./feature/Profile/ProfilePage";
+import ProtectedRoute from "./feature/navigation/ProtectedRoute";
 
 function Logout() {
   localStorage.clear();
@@ -20,19 +22,19 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route
-          path="/"
-          element={
-            <ProtectedRoute>
-              <HomePage />
-            </ProtectedRoute>
-          } //Protected route we cannt go to this /home without login
-        />
-        <Route
           path="/login"
           element={
-            <Login />
+            <ProtectedRoute>
+              <Login />
+            </ProtectedRoute>
           } /* and for this route itsnot protected so we can render this without login  */
         />
+
+        <Route
+          path="/"
+          element={<InventoryPage />} //Protected route we cannt go to this /home without login
+        />
+        <Route path="/profile" element={<ProfilePage />} />
         {/* <Route path="/register" element={<RegisterAndLogout />} /> */}
         <Route path="/logout" element={<Logout />} />
         <Route path="*" element={<NotFound />} />
