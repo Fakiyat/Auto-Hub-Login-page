@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Navbar from "../Navbar-Inventory/Navbar";
-import Tabs from "../Tabs/Tabs";
-import VehicleTable from "../Tabs/VehicleTable";
+import Tabs from "../VehicelPage/Tabs";
+import VehicleTable from "../VehicelPage/VehicleTable";
 import Logout from "../Logout/Logout";
 
 function InventoryPage() {
@@ -13,7 +13,7 @@ function InventoryPage() {
       model: "2021",
       price: "100000",
       status: "In Stock",
-      img: "/Tayota.avif",
+      img: "/Tayota.webp",
     },
     {
       id: 2,
@@ -105,7 +105,7 @@ function InventoryPage() {
     },
   ]);
   return (
-    <div className="inventory-container">
+    <div>
       <nav className="navbar">
         <Navbar />
         <Logout />

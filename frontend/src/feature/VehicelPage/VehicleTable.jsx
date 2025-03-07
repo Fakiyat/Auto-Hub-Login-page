@@ -5,7 +5,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import IconButton from "@mui/material/IconButton";
 import ModeEditIcon from "@mui/icons-material/ModeEdit";
 import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
-import { color } from "@mui/system";
+import { Switch } from "@mui/material";
 
 //Vehicle table filterings
 const VehicleTable = ({ activeTab, vehicles, setVehicles }) => {
@@ -75,6 +75,7 @@ const VehicleTable = ({ activeTab, vehicles, setVehicles }) => {
             : vehicel
         )
       );
+      // console.log(editingVehicle);
       setEditingVehicle(null); // Exit edit mode
     } else {
       //Add new vehicle(Add Case)
@@ -84,7 +85,8 @@ const VehicleTable = ({ activeTab, vehicles, setVehicles }) => {
     setShowAddForm(false);
     ResetForm();
   };
-  //--------------------------------------Handle Editing Row-------------------------------------------------------------------------------------//-------------------------------------------------------------------------------------
+  // console.log(newVehicle);
+  //--------------------------------------Resets the form after every submission-------------------------------------------------------------------------------------//-------------------------------------------------------------------------------------
   const ResetForm = () => {
     setNewVehicle({
       name: "",
@@ -95,7 +97,7 @@ const VehicleTable = ({ activeTab, vehicles, setVehicles }) => {
       imgFile: null,
     });
   };
-
+  //--------------------------------------Handle Editing Row-------------------------------------------------------------------------------------//-------------------------------------------------------------------------------------
   const handleEditVehicle = (vehicel) => {
     setEditingVehicle(vehicel);
     setNewVehicle({ ...vehicel }); // pre-filles form with existing data
@@ -153,7 +155,7 @@ const VehicleTable = ({ activeTab, vehicles, setVehicles }) => {
           className="add-vehicle-btn"
           onClick={() => setShowAddForm(!showAddForm)}
         >
-          Add Form
+          Add Vehicel
         </button>
       </div>
       {/*---------------------------------------- Button toggle change ends here------------------------------------------------- */}
@@ -266,17 +268,11 @@ const VehicleTable = ({ activeTab, vehicles, setVehicles }) => {
               <td>{vehicle.price}</td>
               <td>
                 {/* Website Toogle */}
-                <label className="toggle-switch">
-                  <input type="checkbox" />
-                  <span className="slider round"></span>
-                </label>
+                <Switch />
               </td>
               <td>
                 {/* AA Cars Toggle */}
-                <label className="toggle-switch">
-                  <input type="checkbox" />
-                  <span className="slider round"></span>
-                </label>
+                <Switch />
               </td>
               {/* AutoTraders Dropdown */}
               <td>
@@ -290,27 +286,18 @@ const VehicleTable = ({ activeTab, vehicles, setVehicles }) => {
               </td>
               <td>
                 {/* EMG Toggle */}
-                <label className="toggle-switch">
-                  <input type="checkbox" />
-                  <span className="slider round"></span>
-                </label>
+                <Switch />
               </td>
               <td>
                 {/* Facebook Toggle */}
-                <label className="toggle-switch">
-                  <input type="checkbox" />
-                  <span className="slider round"></span>
-                </label>
+                <Switch />
               </td>
               <td>
                 {/* Social Toggle */}
-                <label className="toggle-switch">
-                  <input type="checkbox" />
-                  <span className="slider round"></span>
-                </label>
+                <Switch />
               </td>
 
-              <td className=" actions">
+              <td>
                 {/* <button className="btn btn-view">View</button> */}
                 <IconButton
                   onClick={() => handleEditVehicle(vehicle)}
