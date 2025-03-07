@@ -58,7 +58,7 @@ export default function SettingsMenu({ handleLogout }) {
         >
           Profile
         </MenuItem>
-        h
+
         <MenuItem
           sx={{
             padding: "10px 20px",

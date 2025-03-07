@@ -1,0 +1,264 @@
+/* General Reset */
+body {
+  margin: 0;
+  padding: 0;
+  background-color: #111827;
+  color: #e5e7eb;
+  font-family: "Inter", sans-serif;
+}
+
+/* Profile Page Layout */
+.profile-body {
+  padding: 24px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* Title & Breadcrumbs */
+.page-title {
+  font-size: 24px;
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: #f3f4f6;
+}
+
+.breadcrumbs {
+  font-size: 13px;
+  color: #9ca3af;
+  margin-bottom: 16px;
+}
+
+/* Tabs Section */
+.tabs {
+  display: flex;
+  border: 1px solid #374151;
+  background-color: #1f2937;
+  border-radius: 8px;
+  overflow: hidden;
+  margin-bottom: 24px;
+  max-width: 600px;
+}
+
+.tabs button {
+  flex: 1;
+  padding: 12px 0;
+  background: transparent;
+  color: #9ca3af;
+  font-size: 14px;
+  border: none;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.tabs button.active {
+  background-color: #f97316;
+  color: #111827;
+  font-weight: 600;
+}
+
+.tabs button:hover {
+  background-color: #ff6600;
+  color: #000;
+}
+
+/* Main Profile Wrapper (Content Box) */
+.profile-wrapper {
+  background-color: #1f2937;
+  padding: 24px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+  margin: 0 auto;
+  max-width: 100%;
+}
+
+/* Profile Card (Top Section) */
+.profile-card {
+  margin-bottom: 24px;
+}
+
+.profile-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.profile-avatar {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  object-fit: cover;
+  background-color: #374151;
+  border: 2px solid #f97316;
+}
+
+.profile-name h3 {
+  margin: 0;
+  font-size: 23px;
+  font-weight: 600;
+  color: #ffffff;
+}
+
+.role {
+  font-size: 14px;
+  font-weight: 500;
+  color: #f97316;
+  margin: 4px 0;
+}
+
+.contact-info p {
+  font-size: 14px;
+  margin: 2px 0;
+  color: #ccc2c2;
+}
+
+.contact-info a {
+  color: #3b82f6;
+  text-decoration: none;
+}
+
+/* Bio Section */
+.bio-section {
+  margin-bottom: 24px;
+  padding-top: 8px;
+}
+
+.bio-section h4 {
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: #ffffff;
+}
+
+.bio-section p {
+  font-size: 16px;
+  color: #9da0a7;
+  line-height: 1.6;
+}
+
+/* Contact Details */
+.contact-details {
+  margin-bottom: 24px;
+}
+
+.contact-details h4 {
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 12px;
+  color: #f3f4f6;
+  border-bottom: 1px solid #374151;
+  padding-bottom: 8px;
+}
+
+/* Contact Details Grid (2 Columns) */
+.details-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 19px 11px;
+  font-size: 17px;
+  color: #ffffff;
+  font-weight: bold;
+}
+
+.details-grid strong {
+  font-size: 16px;
+  font-weight: 500;
+  color: #9da0a7;
+}
+
+/* Edit Button */
+.edit-btn-container {
+  display: flex;
+  position: absolute;
+  right: 60px;
+  bottom: 65px;
+}
+
+.edit-btn {
+  background-color: transparent;
+  color: #f97316;
+  border: 1px solid #f97316;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 14px;
+}
+
+.edit-btn:hover {
+  background-color: #f97316;
+  font-weight: bold;
+  color: #111827;
+}
+
+/* Tab Content */
+.tab-content {
+  flex-grow: 1;
+  padding: 20px;
+  background-color: #1f2937;
+  overflow-y: auto;
+  box-shadow: -2px 0 5px rgba(0, 0, 0, 0.2);
+  border-left: 2px solid #2d3748;
+  border-radius: 8px;
+}
+
+/* Password Section */
+.password-section {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.password-input label {
+  font-size: 14px;
+  color: #f3f4f6;
+  margin-bottom: 4px;
+  display: block;
+}
+
+.password-input input {
+  width: 100%;
+  padding: 8px;
+  background-color: #374151;
+  border: 1px solid #475569;
+  color: #fff;
+  border-radius: 6px;
+}
+
+.password-input small {
+  color: #9ca3af;
+  font-size: 12px;
+}
+
+.save-btn {
+  background-color: #f97316;
+  color: #111827;
+  padding: 10px 16px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  margin-top: 12px;
+  transition: background-color 0.3s ease;
+}
+
+.save-btn:hover {
+  background-color: #ff6600;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  .details-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .edit-btn-container {
+    position: static;
+    justify-content: flex-end;
+    margin-top: 16px;
+  }
+
+  .tabs {
+    max-width: 100%;
+  }
+}

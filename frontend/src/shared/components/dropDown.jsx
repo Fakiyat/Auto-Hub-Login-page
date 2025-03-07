@@ -6,7 +6,7 @@ import NativeSelect from "@mui/material/NativeSelect";
 
 export default function DropDown() {
   return (
-    <Box sx={{ minWidth: 120 }}>
+    <Box sx={{ maxWidth: 100 }}>
       <FormControl fullWidth>
         <InputLabel
           variant="standard"
