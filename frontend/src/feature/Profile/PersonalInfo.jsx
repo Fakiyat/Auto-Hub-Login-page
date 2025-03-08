@@ -24,14 +24,13 @@ const PersonalInfo = ({ contact }) => {
           </div>
         </div>
       </div>
-
-      {/* Bio Section */}
+      {/* Profile Bio Section */}
       <div className="bio-section">
         <h4>Bio</h4>
         <p>{contact.bio}</p>
       </div>
 
-      {/* Contact Details */}
+      {/* profile Contact Details */}
       <div className="contact-details">
         <h4>Contact</h4>
         <div className="details-grid">

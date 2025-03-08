@@ -6,6 +6,16 @@ body {
   color: #e5e7eb;
   font-family: "Inter", sans-serif;
 }
+/* Tab Content background overlay */
+.tab-content {
+  flex-grow: 1;
+  padding: 15px;
+  background-color: #273952;
+  overflow-y: auto;
+  box-shadow: -2px 0 5px rgba(0, 0, 0, 0.2);
+  border-left: 2px solid #2d3748;
+  border-radius: 16px;
+}
 
 /* Profile Page Layout */
 .profile-body {
@@ -16,24 +26,34 @@ body {
 
 /* Title & Breadcrumbs */
 .page-title {
-  font-size: 24px;
-  font-weight: 600;
+  font-size: 32px;
+  font-weight: 800;
   margin-bottom: 8px;
-  color: #f3f4f6;
+  color: #f97316;
+}
+.breadcrumbs {
+  margin-bottom: 50px;
+  font-size: 16px;
+  font-weight: 600;
 }
 
-.breadcrumbs {
-  font-size: 13px;
-  color: #9ca3af;
-  margin-bottom: 16px;
+.breadcrumbs-1 {
+  color: #f97316;
+  cursor: pointer;
+}
+.breadcrumbs-1:hover {
+  color: #959595;
+}
+.breadcrumbs-active {
+  color: #959595;
 }
 
 /* Tabs Section */
 .tabs {
   display: flex;
-  border: 1px solid #374151;
+  border: 2px solid #444c58;
   background-color: #1f2937;
-  border-radius: 8px;
+  border-radius: 20px;
   overflow: hidden;
   margin-bottom: 24px;
   max-width: 600px;
@@ -47,7 +67,7 @@ body {
   font-size: 14px;
   border: none;
   cursor: pointer;
-  transition: background 0.3s;
+  transition: 0.3s;
 }
 
 .tabs button.active {
@@ -63,9 +83,9 @@ body {
 
 /* Main Profile Wrapper (Content Box) */
 .profile-wrapper {
-  background-color: #1f2937;
-  padding: 24px;
-  border-radius: 12px;
+  background-color: #202c3b;
+  padding: 25px;
+  border-radius: 15px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
   margin: 0 auto;
   max-width: 100%;
@@ -73,47 +93,74 @@ body {
 
 /* Profile Card (Top Section) */
 .profile-card {
-  margin-bottom: 24px;
+  margin-bottom: 40px;
 }
 
 .profile-header {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 16px;
+  gap: 20px;
 }
 
 .profile-avatar {
-  width: 80px;
-  height: 80px;
+  width: 120px;
+  height: 120px;
   border-radius: 50%;
   object-fit: cover;
   background-color: #374151;
   border: 2px solid #f97316;
 }
+.profile-name {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
 
 .profile-name h3 {
   margin: 0;
-  font-size: 23px;
-  font-weight: 600;
+  font-size: 28px;
+  font-weight: 700;
   color: #ffffff;
 }
-
-.role {
-  font-size: 14px;
-  font-weight: 500;
-  color: #f97316;
-  margin: 4px 0;
-}
-
 .contact-info p {
+  text-align: center;
   font-size: 14px;
   margin: 2px 0;
   color: #ccc2c2;
 }
 
 .contact-info a {
-  color: #3b82f6;
+  text-align: center;
+  color: #3d87ff;
   text-decoration: none;
+}
+/* Company card logo and name*/
+
+.company-card {
+  margin-bottom: 50px;
+}
+.company-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+}
+.company-logo {
+  width: 180px;
+  height: 180px;
+  border-radius: 50%;
+  object-fit: cover;
+  background-color: #3b4555;
+  border: 2px solid #f97316;
+  text-align: center;
+}
+
+.role {
+  font-size: 14px;
+  font-weight: 700;
+  color: #f97316;
+  margin: 4px 0;
 }
 
 /* Bio Section */
@@ -123,16 +170,18 @@ body {
 }
 
 .bio-section h4 {
-  font-size: 16px;
+  font-size: 19px;
   font-weight: 600;
   margin-bottom: 8px;
+  padding-bottom: 10px;
   color: #ffffff;
+  border-bottom: 2px solid #374151;
 }
 
 .bio-section p {
   font-size: 16px;
   color: #9da0a7;
-  line-height: 1.6;
+  line-height: 1.9;
 }
 
 /* Contact Details */
@@ -141,11 +190,11 @@ body {
 }
 
 .contact-details h4 {
-  font-size: 16px;
+  font-size: 19px;
   font-weight: 600;
   margin-bottom: 12px;
   color: #f3f4f6;
-  border-bottom: 1px solid #374151;
+  border-bottom: 2px solid #374151;
   padding-bottom: 8px;
 }
 
@@ -153,24 +202,26 @@ body {
 .details-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 19px 11px;
+  gap: 19px 12px;
   font-size: 17px;
   color: #ffffff;
-  font-weight: bold;
+  font-weight: 900;
 }
 
 .details-grid strong {
   font-size: 16px;
-  font-weight: 500;
+  font-weight: 600;
   color: #9da0a7;
+  padding-right: 4px;
 }
 
 /* Edit Button */
 .edit-btn-container {
   display: flex;
-  position: absolute;
-  right: 60px;
-  bottom: 65px;
+  position: relative;
+  justify-content: end;
+  right: 55px;
+  bottom: 80px;
 }
 
 .edit-btn {
@@ -189,61 +240,6 @@ body {
   background-color: #f97316;
   font-weight: bold;
   color: #111827;
-}
-
-/* Tab Content */
-.tab-content {
-  flex-grow: 1;
-  padding: 20px;
-  background-color: #1f2937;
-  overflow-y: auto;
-  box-shadow: -2px 0 5px rgba(0, 0, 0, 0.2);
-  border-left: 2px solid #2d3748;
-  border-radius: 8px;
-}
-
-/* Password Section */
-.password-section {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
-
-.password-input label {
-  font-size: 14px;
-  color: #f3f4f6;
-  margin-bottom: 4px;
-  display: block;
-}
-
-.password-input input {
-  width: 100%;
-  padding: 8px;
-  background-color: #374151;
-  border: 1px solid #475569;
-  color: #fff;
-  border-radius: 6px;
-}
-
-.password-input small {
-  color: #9ca3af;
-  font-size: 12px;
-}
-
-.save-btn {
-  background-color: #f97316;
-  color: #111827;
-  padding: 10px 16px;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  font-weight: 600;
-  margin-top: 12px;
-  transition: background-color 0.3s ease;
-}
-
-.save-btn:hover {
-  background-color: #ff6600;
 }
 
 /* Responsive Adjustments */

@@ -172,25 +172,33 @@ const VehicleTable = ({ activeTab, vehicles, setVehicles }) => {
             <hr />
             <input
               type="text"
-              placeholder="Vehicle Name"
+              placeholder=" Name"
               name="name"
               value={newVehicle.name}
               onChange={handleFormChange}
             />
             <input
               type="text"
-              placeholder="Vehicle Model"
+              placeholder=" Model"
               name="model"
               value={newVehicle.model}
               onChange={handleFormChange}
             />
             <input
               type="text"
-              placeholder="Vehicle Price"
-              name="price"
-              value={newVehicle.price}
+              placeholder=" Transmission"
+              name="transnission"
+              value={newVehicle.transmission}
               onChange={handleFormChange}
             />
+            <input
+              type="text"
+              placeholder="Fuel Type"
+              name="Fuel_type"
+              value={newVehicle.fuel_type}
+              onChange={handleFormChange}
+            />
+
             <select
               name="status"
               value={newVehicle.status}
@@ -232,6 +240,8 @@ const VehicleTable = ({ activeTab, vehicles, setVehicles }) => {
               />
             </th>
             <th>Summary</th>
+            <th>Transmission</th>
+            <th>Fuel Type</th>
             <th>Price</th>
             <th>Website</th>
             <th>AA Cars</th>
@@ -261,10 +271,12 @@ const VehicleTable = ({ activeTab, vehicles, setVehicles }) => {
 
                 <div>
                   <div className="vehicle-name">{vehicle.name}</div>
-                  <div className="vehicle-status">{vehicle.status}</div>
                   <div className="vehicle-model">{vehicle.model}</div>
+                  <div className="vehicle-status">{vehicle.status}</div>
                 </div>
               </td>
+              <td>{vehicle.transmission}</td>
+              <td>{vehicle.fuel_type}</td>
               <td>{vehicle.price}</td>
               <td>
                 {/* Website Toogle */}

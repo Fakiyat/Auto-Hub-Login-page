@@ -56,7 +56,7 @@ export default function SettingsMenu({ handleLogout }) {
           }}
           onClick={handleProfileClick}
         >
-          Profile
+          Account Settings
         </MenuItem>
 
         <MenuItem
