@@ -25,3 +25,8 @@
 <p>First you have to fill this form</p>
 
 ![Screenshot 2025-03-10 033228](https://github.com/user-attachments/assets/22991d87-0857-4828-b093-9e0d50d799d5)
+
+<hr/>
+<h2> Also have a Settings bar which can help you to logout or render to profile page</h2>
+
+![Screenshot 2025-03-10 033243](https://github.com/user-attachments/assets/0b16597f-4b9b-4486-85c7-d529488246e2)
