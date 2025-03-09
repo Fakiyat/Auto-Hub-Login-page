@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useSearchParams } from "react-router-dom"; // For sorting from URL,,, Used to read sorting parameters from the URL (e.g., ?sort=price&order=desc)
 import "./Style/VehicleTable.css";
 import DropDown from "@/shared/components/dropDown";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -9,12 +10,54 @@ import { Switch } from "@mui/material";
 
 //Vehicle table filterings
 const VehicleTable = ({ activeTab, vehicles, setVehicles }) => {
-  const [searchTerm, setSearchTerm] = useState(""); // Search filterings
+  const [searchTerm, setSearchTerm] = useState(""); // Search filterings ,  Stores what the user types in the search box.
   const [selectedRows, setSelectedRows] = useState([]); // it helps to track the selected rows, it stores the ids of the vehicles that are selected
   const [selectAll, setSelectAll] = useState(false); //it helps to track "Select All" checkboxes
   const [showAddForm, setShowAddForm] = useState(false); // this is for the form when we click to add vehicle, its is set to be false so it will now be showing form all the time
   const [editingVehicle, setEditingVehicle] = useState(null); //To track Editing
+  const [displayedVehicles, setDisplayedVehicles] = useState([]); // ,Stores the vehicles currently shown in the table.
+  const [page, setPage] = useState(1); // Tracks Pagination for lazy loading,,Tracks which page of records we are on (used for lazy loading).
+  const [loading, setLoading] = useState(false); // prevents duplicate fetching of data  (avoids multiple API calls).
 
+  const [searchParams] = useSearchParams(); // Reads sorting parameters from URL
+  const sortBy = searchParams.get("sort") || "name"; // Determines which column to sort by (default is "id").
+  const sortOrder = searchParams.get("order") || "ascending"; //Determines sorting order (asc or desc).
+  //-------------------------------------Lazy Loading fetch  next 8 records-----------------///---------------------------------------------//
+  const loadMoreVehicles = () => {
+    setLoading(true);
+    setTimeout(() => {
+      let nextVehicles = vehicles.slice(0, page * 4); // Load next batch
+      if (page === 1) {
+        // Sort only the first 4 records alphabetically by name
+        nextVehicles = nextVehicles.sort((a, b) =>
+          a.name.toLowerCase().localeCompare(b.name.toLowerCase())
+        );
+      }
+      setDisplayedVehicles(nextVehicles); /// append new items
+      setPage(page + 1); // Increase page count
+      setLoading(false);
+    }, 500); // simulate delay
+  };
+  //---------------------------------Load Initial Data on component Mount--------------------------------------------------------------//
+  useEffect(() => {
+    loadMoreVehicles(); //Runs loadMoreVehicles() once when the component mounts.Loads the first 4 records.
+  }, []);
+  //---------------------------------Detect Scroll to load more records--------------------------------------------------------------/
+  useEffect(() => {
+    const handleScroll = () => {
+      if (
+        window.innerHeight + window.scrollY >=
+          document.body.offsetHeight - 100 &&
+        !loading
+      ) {
+        loadMoreVehicles();
+      }
+    };
+    window.addEventListener("scroll", handleScroll); // Attaches the scroll event.
+    return () => window.removeEventListener("scroll", handleScroll); // cleannup, Removes the event listener when the component unmounts.
+  }, [loading]);
+
+  //----------------------------------------------------///---------------------------------------------------------------------------------------
   const [newVehicle, setNewVehicle] = useState({
     name: "",
     model: "",
@@ -128,7 +171,7 @@ const VehicleTable = ({ activeTab, vehicles, setVehicles }) => {
   }
 
   //--------------------------------------------------------------------------------------------------------------//---------------------------------------------------------------
-  const filteredVehicles = vehicles.filter((vehicle) => {
+  const filteredVehicles = displayedVehicles.filter((vehicle) => {
     const matchesStatus = activeTab === "All" || vehicle.status === activeTab; // const matchsStatus= This checks if the vehicle’s status (like "In Stock" or "For Sale") matches the currently selected tab.
     // activeTab === "All" means if "All" is selected, we want to show all vehicles. vehicle.status === activeTab means only show vehicles that match the selected tab.
     const matchesSearch = vehicle.name // search filter name search-----Both the vehicle name and the search term are changed to lowercase so the search is case-insensitive
@@ -138,6 +181,32 @@ const VehicleTable = ({ activeTab, vehicles, setVehicles }) => {
   });
 
   //   console.log(filteredVehicles); it return the data of vehicles in an array
+  //----------------------------------------------Apply Sorting-----------Sorting with numbers like price the below function runs fine------------------------------------------------------------------
+  // const sortedVehicles = [...filteredVehicles].sort((a, b) => {
+  //   if (sortOrder === "acending") {
+  //     // //sortOrder: Direction (asc or desc).
+  //     return a[sortBy] > b[sortBy] ? 1 : -1; //sortBy: Column selected from the URL (?sort=price).
+  //   } else {
+  //     return a[sortBy] < b[sortBy] ? 1 : -1;
+  //   }
+  // });
+  //--------------------------------------------------/Sorting by names/-----------------------------------------
+  const sortedVehicles = [...filteredVehicles].sort((a, b) => {
+    if (typeof a[sortBy] === "string") {
+      return sortOrder === "ascending"
+        ? a[sortBy].toLowerCase().localeCompare(b[sortBy].toLowerCase())
+        : b[sortBy].toLowerCase().localeCompare(a[sortBy].toLowerCase());
+    }
+    // } else {
+    //   return sortOrder === "ascending"
+    //     ? a[sortBy] > b[sortBy]
+    //       ? 1
+    //       : -1
+    //     : a[sortBy] < b[sortBy]
+    //     ? 1
+    //     : -1;
+    // }
+  });
   //--------------------------------------------------//-----------------------------------------
   return (
     <div className=" vehicle-table">
@@ -253,7 +322,7 @@ const VehicleTable = ({ activeTab, vehicles, setVehicles }) => {
           </tr>
         </thead>
         <tbody>
-          {filteredVehicles.map((vehicle) => (
+          {sortedVehicles.map((vehicle) => (
             <tr key={vehicle.id}>
               <td>
                 <input
@@ -331,6 +400,7 @@ const VehicleTable = ({ activeTab, vehicles, setVehicles }) => {
           ))}
         </tbody>
       </table>
+      {loading && <p>Loading more vehicles...</p>}
     </div>
   );
 };
