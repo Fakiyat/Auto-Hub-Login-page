@@ -27,4 +27,9 @@
 
 <hr/>
 
+<hr/>
+<h2> Also have a Settings bar which can help you to logout or render to profile page</h2>
+
+![Screenshot 2025-03-10 033243](https://github.com/user-attachments/assets/0b16597f-4b9b-4486-85c7-d529488246e2)
+
 
