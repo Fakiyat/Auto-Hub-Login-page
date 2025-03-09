@@ -20,7 +20,7 @@ const VehicleTable = ({ activeTab, vehicles, setVehicles }) => {
   const [loading, setLoading] = useState(false); // prevents duplicate fetching of data  (avoids multiple API calls).
 
   const [searchParams] = useSearchParams(); // Reads sorting parameters from URL
-  const sortBy = searchParams.get("sort") || "name"; // Determines which column to sort by (default is "id").
+  const sortBy = searchParams.get("sort") || "id"; // Determines which column to sort by (default is "id").
   const sortOrder = searchParams.get("order") || "ascending"; //Determines sorting order (asc or desc).
   //-------------------------------------Lazy Loading fetch  next 8 records-----------------///---------------------------------------------//
   const loadMoreVehicles = () => {
@@ -119,6 +119,7 @@ const VehicleTable = ({ activeTab, vehicles, setVehicles }) => {
         )
       );
       // console.log(editingVehicle);
+
       setEditingVehicle(null); // Exit edit mode
     } else {
       //Add new vehicle(Add Case)
@@ -126,6 +127,7 @@ const VehicleTable = ({ activeTab, vehicles, setVehicles }) => {
       setVehicles([...vehicles, newVehicleWithId]);
     }
     setShowAddForm(false);
+
     ResetForm();
   };
   // console.log(newVehicle);
@@ -146,6 +148,22 @@ const VehicleTable = ({ activeTab, vehicles, setVehicles }) => {
     setNewVehicle({ ...vehicel }); // pre-filles form with existing data
     setShowAddForm(true); // Shows the form for editing
   };
+
+  ///// --------------------------- For editing form--------------------
+  useEffect(() => {
+    if (editingVehicle) {
+      setNewVehicle(editingVehicle);
+    } else {
+      setNewVehicle({
+        name: "",
+        model: "",
+        price: "",
+        status: "In Stock",
+        img: "",
+        imgFile: null,
+      });
+    }
+  }, [editingVehicle]);
 
   /// handling delete button
 
@@ -182,31 +200,31 @@ const VehicleTable = ({ activeTab, vehicles, setVehicles }) => {
 
   //   console.log(filteredVehicles); it return the data of vehicles in an array
   //----------------------------------------------Apply Sorting-----------Sorting with numbers like price the below function runs fine------------------------------------------------------------------
-  // const sortedVehicles = [...filteredVehicles].sort((a, b) => {
-  //   if (sortOrder === "acending") {
-  //     // //sortOrder: Direction (asc or desc).
-  //     return a[sortBy] > b[sortBy] ? 1 : -1; //sortBy: Column selected from the URL (?sort=price).
-  //   } else {
-  //     return a[sortBy] < b[sortBy] ? 1 : -1;
-  //   }
-  // });
-  //--------------------------------------------------/Sorting by names/-----------------------------------------
   const sortedVehicles = [...filteredVehicles].sort((a, b) => {
-    if (typeof a[sortBy] === "string") {
-      return sortOrder === "ascending"
-        ? a[sortBy].toLowerCase().localeCompare(b[sortBy].toLowerCase())
-        : b[sortBy].toLowerCase().localeCompare(a[sortBy].toLowerCase());
+    if (sortOrder === "ascending") {
+      // //sortOrder: Direction (asc or desc).
+      return a[sortBy] > b[sortBy] ? 1 : -1; //sortBy: Column selected from the URL (?sort=price).
+    } else {
+      return a[sortBy] < b[sortBy] ? 1 : -1;
     }
-    // } else {
-    //   return sortOrder === "ascending"
-    //     ? a[sortBy] > b[sortBy]
-    //       ? 1
-    //       : -1
-    //     : a[sortBy] < b[sortBy]
-    //     ? 1
-    //     : -1;
-    // }
   });
+  //--------------------------------------------------/Sorting by names/-----------------------------------------
+  // const sortedVehicles = [...filteredVehicles].sort((a, b) => {
+  //   if (typeof a[sortBy] === "string") {
+  //     return sortOrder === "ascending"
+  //       ? a[sortBy].toLowerCase().localeCompare(b[sortBy].toLowerCase())
+  //       : b[sortBy].toLowerCase().localeCompare(a[sortBy].toLowerCase());
+  //   }
+  // } else {
+  //   return sortOrder === "ascending"
+  //     ? a[sortBy] > b[sortBy]
+  //       ? 1
+  //       : -1
+  //     : a[sortBy] < b[sortBy]
+  //     ? 1
+  //     : -1;
+  // }
+  // });
   //--------------------------------------------------//-----------------------------------------
   return (
     <div className=" vehicle-table">
@@ -237,7 +255,9 @@ const VehicleTable = ({ activeTab, vehicles, setVehicles }) => {
               aria-label="close"
               onClick={() => setShowAddForm(false)}
             ></CloseRoundedIcon>
-            <h2 style={{ color: "#007bff" }}>Add New Vehicel</h2>
+            <h2 style={{ color: "#007bff" }}>
+              {editingVehicle ? "Edit Vehicel" : "Add New Vehicel"}
+            </h2>
             <hr />
             <input
               type="text"
@@ -245,6 +265,7 @@ const VehicleTable = ({ activeTab, vehicles, setVehicles }) => {
               name="name"
               value={newVehicle.name}
               onChange={handleFormChange}
+              required
             />
             <input
               type="text"
@@ -252,6 +273,7 @@ const VehicleTable = ({ activeTab, vehicles, setVehicles }) => {
               name="model"
               value={newVehicle.model}
               onChange={handleFormChange}
+              required
             />
             <input
               type="text"
@@ -259,6 +281,7 @@ const VehicleTable = ({ activeTab, vehicles, setVehicles }) => {
               name="transnission"
               value={newVehicle.transmission}
               onChange={handleFormChange}
+              required
             />
             <input
               type="text"
@@ -266,6 +289,7 @@ const VehicleTable = ({ activeTab, vehicles, setVehicles }) => {
               name="Fuel_type"
               value={newVehicle.fuel_type}
               onChange={handleFormChange}
+              required
             />
 
             <select

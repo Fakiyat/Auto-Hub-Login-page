@@ -109,7 +109,7 @@ export default [
   },
   {
     id: 12,
-    name: "Baleno",
+    name: "BALENO",
     model: "2021",
     price: "1000000",
     status: "For Sale",
