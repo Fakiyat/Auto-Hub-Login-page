@@ -12,9 +12,9 @@
 <hr/>
 
 <h2>This is the Home page</h2>
-<p> This is just a basic home page You can change it </p>
+<p> This is the home page  </p>
 <hr/>
 
-![Screenshot 2025-02-20 020525](https://github.com/user-attachments/assets/aa97165a-56b4-47ed-bf9e-54c56e8cf9a3)
 
 
+![Screenshot 2025-03-10 024547](https://github.com/user-attachments/assets/251b2f03-c312-4a26-9ae7-d9f17db01787)
