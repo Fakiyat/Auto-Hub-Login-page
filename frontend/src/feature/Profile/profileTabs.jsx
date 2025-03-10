@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import PersonalInfo from "./PersonalInfo";
 import CompanyInfo from "./CompanyInfo";
 import PasswordReset from "./PasswordReset";
