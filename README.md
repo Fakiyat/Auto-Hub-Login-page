@@ -12,9 +12,21 @@
 <hr/>
 
 <h2>This is the Home page</h2>
-<p> This is just a basic home page You can change it </p>
+<p> This is the home page  </p>
 <hr/>
 
-![Screenshot 2025-02-20 020525](https://github.com/user-attachments/assets/aa97165a-56b4-47ed-bf9e-54c56e8cf9a3)
 
 
+![Screenshot 2025-03-10 024547](https://github.com/user-attachments/assets/251b2f03-c312-4a26-9ae7-d9f17db01787)
+<hr/>
+
+<h2>This is the Add vehicles Button</h2>
+<p>With the help of this you can add new vehicles to cart </p>
+<p>First you have to fill this form</p>
+
+![Screenshot 2025-03-10 033228](https://github.com/user-attachments/assets/22991d87-0857-4828-b093-9e0d50d799d5)
+
+<hr/>
+<h2> Also have a Settings bar which can help you to logout or render to profile page</h2>
+
+![Screenshot 2025-03-10 033243](https://github.com/user-attachments/assets/0b16597f-4b9b-4486-85c7-d529488246e2)
