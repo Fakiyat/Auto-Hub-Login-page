@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useSearchParams } from "react-router-dom"; // For sorting from URL,,, Used to read sorting parameters from the URL (e.g., ?sort=price&order=desc)
 import "./Style/VehicleTable.css";
 import DropDown from "@/shared/components/dropDown";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -9,12 +10,54 @@ import { Switch } from "@mui/material";
 
 //Vehicle table filterings
 const VehicleTable = ({ activeTab, vehicles, setVehicles }) => {
-  const [searchTerm, setSearchTerm] = useState(""); // Search filterings
+  const [searchTerm, setSearchTerm] = useState(""); // Search filterings ,  Stores what the user types in the search box.
   const [selectedRows, setSelectedRows] = useState([]); // it helps to track the selected rows, it stores the ids of the vehicles that are selected
   const [selectAll, setSelectAll] = useState(false); //it helps to track "Select All" checkboxes
   const [showAddForm, setShowAddForm] = useState(false); // this is for the form when we click to add vehicle, its is set to be false so it will now be showing form all the time
   const [editingVehicle, setEditingVehicle] = useState(null); //To track Editing
+  const [displayedVehicles, setDisplayedVehicles] = useState([]); // ,Stores the vehicles currently shown in the table.
+  const [page, setPage] = useState(1); // Tracks Pagination for lazy loading,,Tracks which page of records we are on (used for lazy loading).
+  const [loading, setLoading] = useState(false); // prevents duplicate fetching of data  (avoids multiple API calls).
 
+  const [searchParams] = useSearchParams(); // Reads sorting parameters from URL
+  const sortBy = searchParams.get("sort") || "id"; // Determines which column to sort by (default is "id").
+  const sortOrder = searchParams.get("order") || "ascending"; //Determines sorting order (asc or desc).
+  //-------------------------------------Lazy Loading fetch  next 8 records-----------------///---------------------------------------------//
+  const loadMoreVehicles = () => {
+    setLoading(true);
+    setTimeout(() => {
+      let nextVehicles = vehicles.slice(0, page * 4); // Load next batch
+      if (page === 1) {
+        // Sort only the first 4 records alphabetically by name
+        nextVehicles = nextVehicles.sort((a, b) =>
+          a.name.toLowerCase().localeCompare(b.name.toLowerCase())
+        );
+      }
+      setDisplayedVehicles(nextVehicles); /// append new items
+      setPage(page + 1); // Increase page count
+      setLoading(false);
+    }, 500); // simulate delay
+  };
+  //---------------------------------Load Initial Data on component Mount--------------------------------------------------------------//
+  useEffect(() => {
+    loadMoreVehicles(); //Runs loadMoreVehicles() once when the component mounts.Loads the first 4 records.
+  }, []);
+  //---------------------------------Detect Scroll to load more records--------------------------------------------------------------/
+  useEffect(() => {
+    const handleScroll = () => {
+      if (
+        window.innerHeight + window.scrollY >=
+          document.body.offsetHeight - 100 &&
+        !loading
+      ) {
+        loadMoreVehicles();
+      }
+    };
+    window.addEventListener("scroll", handleScroll); // Attaches the scroll event.
+    return () => window.removeEventListener("scroll", handleScroll); // cleannup, Removes the event listener when the component unmounts.
+  }, [loading]);
+
+  //----------------------------------------------------///---------------------------------------------------------------------------------------
   const [newVehicle, setNewVehicle] = useState({
     name: "",
     model: "",
@@ -76,6 +119,7 @@ const VehicleTable = ({ activeTab, vehicles, setVehicles }) => {
         )
       );
       // console.log(editingVehicle);
+
       setEditingVehicle(null); // Exit edit mode
     } else {
       //Add new vehicle(Add Case)
@@ -83,6 +127,7 @@ const VehicleTable = ({ activeTab, vehicles, setVehicles }) => {
       setVehicles([...vehicles, newVehicleWithId]);
     }
     setShowAddForm(false);
+
     ResetForm();
   };
   // console.log(newVehicle);
@@ -103,6 +148,22 @@ const VehicleTable = ({ activeTab, vehicles, setVehicles }) => {
     setNewVehicle({ ...vehicel }); // pre-filles form with existing data
     setShowAddForm(true); // Shows the form for editing
   };
+
+  ///// --------------------------- For editing form--------------------
+  useEffect(() => {
+    if (editingVehicle) {
+      setNewVehicle(editingVehicle);
+    } else {
+      setNewVehicle({
+        name: "",
+        model: "",
+        price: "",
+        status: "In Stock",
+        img: "",
+        imgFile: null,
+      });
+    }
+  }, [editingVehicle]);
 
   /// handling delete button
 
@@ -128,7 +189,7 @@ const VehicleTable = ({ activeTab, vehicles, setVehicles }) => {
   }
 
   //--------------------------------------------------------------------------------------------------------------//---------------------------------------------------------------
-  const filteredVehicles = vehicles.filter((vehicle) => {
+  const filteredVehicles = displayedVehicles.filter((vehicle) => {
     const matchesStatus = activeTab === "All" || vehicle.status === activeTab; // const matchsStatus= This checks if the vehicle’s status (like "In Stock" or "For Sale") matches the currently selected tab.
     // activeTab === "All" means if "All" is selected, we want to show all vehicles. vehicle.status === activeTab means only show vehicles that match the selected tab.
     const matchesSearch = vehicle.name // search filter name search-----Both the vehicle name and the search term are changed to lowercase so the search is case-insensitive
@@ -138,6 +199,32 @@ const VehicleTable = ({ activeTab, vehicles, setVehicles }) => {
   });
 
   //   console.log(filteredVehicles); it return the data of vehicles in an array
+  //----------------------------------------------Apply Sorting-----------Sorting with numbers like price the below function runs fine------------------------------------------------------------------
+  const sortedVehicles = [...filteredVehicles].sort((a, b) => {
+    if (sortOrder === "ascending") {
+      // //sortOrder: Direction (asc or desc).
+      return a[sortBy] > b[sortBy] ? 1 : -1; //sortBy: Column selected from the URL (?sort=price).
+    } else {
+      return a[sortBy] < b[sortBy] ? 1 : -1;
+    }
+  });
+  //--------------------------------------------------/Sorting by names/-----------------------------------------
+  // const sortedVehicles = [...filteredVehicles].sort((a, b) => {
+  //   if (typeof a[sortBy] === "string") {
+  //     return sortOrder === "ascending"
+  //       ? a[sortBy].toLowerCase().localeCompare(b[sortBy].toLowerCase())
+  //       : b[sortBy].toLowerCase().localeCompare(a[sortBy].toLowerCase());
+  //   }
+  // } else {
+  //   return sortOrder === "ascending"
+  //     ? a[sortBy] > b[sortBy]
+  //       ? 1
+  //       : -1
+  //     : a[sortBy] < b[sortBy]
+  //     ? 1
+  //     : -1;
+  // }
+  // });
   //--------------------------------------------------//-----------------------------------------
   return (
     <div className=" vehicle-table">
@@ -168,29 +255,43 @@ const VehicleTable = ({ activeTab, vehicles, setVehicles }) => {
               aria-label="close"
               onClick={() => setShowAddForm(false)}
             ></CloseRoundedIcon>
-            <h2 style={{ color: "#007bff" }}>Add New Vehicel</h2>
+            <h2 style={{ color: "#007bff" }}>
+              {editingVehicle ? "Edit Vehicel" : "Add New Vehicel"}
+            </h2>
             <hr />
             <input
               type="text"
-              placeholder="Vehicle Name"
+              placeholder=" Name"
               name="name"
               value={newVehicle.name}
               onChange={handleFormChange}
+              required
             />
             <input
               type="text"
-              placeholder="Vehicle Model"
+              placeholder=" Model"
               name="model"
               value={newVehicle.model}
               onChange={handleFormChange}
+              required
             />
             <input
               type="text"
-              placeholder="Vehicle Price"
-              name="price"
-              value={newVehicle.price}
+              placeholder=" Transmission"
+              name="transnission"
+              value={newVehicle.transmission}
               onChange={handleFormChange}
+              required
             />
+            <input
+              type="text"
+              placeholder="Fuel Type"
+              name="Fuel_type"
+              value={newVehicle.fuel_type}
+              onChange={handleFormChange}
+              required
+            />
+
             <select
               name="status"
               value={newVehicle.status}
@@ -232,6 +333,8 @@ const VehicleTable = ({ activeTab, vehicles, setVehicles }) => {
               />
             </th>
             <th>Summary</th>
+            <th>Transmission</th>
+            <th>Fuel Type</th>
             <th>Price</th>
             <th>Website</th>
             <th>AA Cars</th>
@@ -243,7 +346,7 @@ const VehicleTable = ({ activeTab, vehicles, setVehicles }) => {
           </tr>
         </thead>
         <tbody>
-          {filteredVehicles.map((vehicle) => (
+          {sortedVehicles.map((vehicle) => (
             <tr key={vehicle.id}>
               <td>
                 <input
@@ -261,10 +364,12 @@ const VehicleTable = ({ activeTab, vehicles, setVehicles }) => {
 
                 <div>
                   <div className="vehicle-name">{vehicle.name}</div>
-                  <div className="vehicle-status">{vehicle.status}</div>
                   <div className="vehicle-model">{vehicle.model}</div>
+                  <div className="vehicle-status">{vehicle.status}</div>
                 </div>
               </td>
+              <td>{vehicle.transmission}</td>
+              <td>{vehicle.fuel_type}</td>
               <td>{vehicle.price}</td>
               <td>
                 {/* Website Toogle */}
@@ -319,6 +424,7 @@ const VehicleTable = ({ activeTab, vehicles, setVehicles }) => {
           ))}
         </tbody>
       </table>
+      {loading && <p>Loading more vehicles...</p>}
     </div>
   );
 };

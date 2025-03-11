@@ -9,7 +9,7 @@ const Logout = () => {
 
   useEffect(() => {
     const token = localStorage.getItem("accessToken");
-    if (!token) navigate("/login");
+    // if (!token) navigate("/login");
     const storedUser = JSON.parse(localStorage.getItem("user")) || {
       name: "Guest",
     };
